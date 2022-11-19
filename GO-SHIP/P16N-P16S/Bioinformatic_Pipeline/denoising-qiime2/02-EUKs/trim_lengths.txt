@@ -1,0 +1,2 @@
+forward trim length = 220 bp
+reverse trim length = 180 bp

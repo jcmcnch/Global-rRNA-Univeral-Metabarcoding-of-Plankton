@@ -1,0 +1,2 @@
+DADA2 truncation length for forward reads = 220 bp
+DADA2 truncation length for reverse reads = 180 bp
