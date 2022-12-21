@@ -144,7 +144,7 @@ temp2 <- i8s.r[,c("DNA_ID","Cruise","Station","Niskin","Cast_type","DATE", "LATI
 colnames(temp2) <- c("DNA_ID","Cruise","Station","Niskin", "Cast_type","Date_R_CTD","Latitude_R_CTD", 
                      "Longitude_R_CTD","Pressure_R_CTD", "Pressure_Carlson","Depth_R_CTD",
                      "Temperature_R_CTD", "Salinity_R_CTD", "Oxygen_R_CTD")
-temp2$Date_Carlson <- df.raw$Date[match(temp2$DNA_ID, df.raw$DNA_ID)]
+
 
 ## 15) input file = I09N raw TM cast data downloaded from 
 ## https://cchdo.ucsd.edu/cruise/33RR20070322 but use modified version 
@@ -322,6 +322,7 @@ colnames(save.df) <- c("DNA_ID","Cruise","Station","Niskin","Cast_type","Date_Ca
 ## the cast latitude, longitude is the same as R_CTD since it all came from regular cast
 temp2$Latitude_Cast_CTD <- temp2$Latitude_R_CTD
 temp2$Longitude_Cast_CTD <- temp2$Longitude_R_CTD
+temp2$Date_Carlson <- df.raw$Date[match(temp2$DNA_ID, df.raw$DNA_ID)]
 ##
 final.i8s.r <- temp2[,c("DNA_ID","Cruise","Station","Niskin","Cast_type","Date_Carlson",
                         "Date_R_CTD","Latitude_Cast_CTD","Latitude_R_CTD", 
@@ -335,7 +336,45 @@ colnames(final.i8s.r) <- c("DNA_ID","Cruise","Station","Niskin","Cast_type","Dat
                            "Depth_Cast_CTD","Temperature_R_CTD","Salinity_R_CTD",
                            "Oxygen_R_CTD")
 save.df <- rbind(save.df, final.i8s.r)
+
+## 30) Manually add station 198 T, S, and oxygen and latitude, longitude, date CTD data to samples 
+## from Station 199 since it's the closest sample
+manual.temp <- ctd.i8s.i9n[ctd.i8s.i9n$StationID=="I9N-S198",]
+manual.temp2 <- i8s.i9n.final[i8s.i9n.final$StationID=="I9N-S199",]
+manual.temp$StationdID.change <- "I9N-S199"
+manual.temp$StationID_pressure2 <- paste(manual.temp$StationdID.change, manual.temp$CTDPRS_DBAR, sep = "-")
+manual.temp2$Temperature_R_CTD <- manual.temp$CTDTMP_ITS.90[match(manual.temp2$StationID_pressure,
+                                                                  manual.temp$StationID_pressure2)]
+manual.temp2$Salinity_R_CTD <- manual.temp$CTDSAL_PSS.78[match(manual.temp2$StationID_pressure,
+                                                                  manual.temp$StationID_pressure2)]
+manual.temp2$Oxygen_R_CTD <- manual.temp$CTDOXY_UMOL_KG[match(manual.temp2$StationID_pressure,
+                                                                  manual.temp$StationID_pressure2)]
+manual.temp2$Latitude_R_CTD <- manual.temp$Latitude_CTD[match(manual.temp2$StationID_pressure,
+                                                                  manual.temp$StationID_pressure2)]
+manual.temp2$Longitude_R_CTD <- manual.temp$Longitude_CTD[match(manual.temp2$StationID_pressure,
+                                                                  manual.temp$StationID_pressure2)]
+manual.temp2$Date_R_CTD <- manual.temp$Date_CTD[match(manual.temp2$StationID_pressure,
+                                                                  manual.temp$StationID_pressure2)]
+## now add all these to the final save df
+save.df$Temperature_R_CTD <- ifelse(is.na(save.df$Temperature_R_CTD),manual.temp2$Temperature_R_CTD[
+  match(save.df$DNA_ID,manual.temp2$DNA_ID)],save.df$Temperature_R_CTD)
+save.df$Salinity_R_CTD <- ifelse(is.na(save.df$Salinity_R_CTD),manual.temp2$Salinity_R_CTD[
+  match(save.df$DNA_ID,manual.temp2$DNA_ID)], save.df$Salinity_R_CTD)
+save.df$Oxygen_R_CTD <- ifelse(is.na(save.df$Oxygen_R_CTD),manual.temp2$Oxygen_R_CTD[
+  match(save.df$DNA_ID,manual.temp2$DNA_ID)], save.df$Oxygen_R_CTD)
+save.df$Latitude_R_CTD <- ifelse(is.na(save.df$Latitude_R_CTD),manual.temp2$Latitude_R_CTD[
+  match(save.df$DNA_ID,manual.temp2$DNA_ID)], save.df$Latitude_R_CTD)
+save.df$Longitude_R_CTD <- ifelse(is.na(save.df$Longitude_R_CTD),manual.temp2$Longitude_R_CTD[
+  match(save.df$DNA_ID,manual.temp2$DNA_ID)], save.df$Longitude_R_CTD)
+save.df$Date_R_CTD <- ifelse(is.na(save.df$Date_R_CTD),manual.temp2$Date_R_CTD[
+  match(save.df$DNA_ID,manual.temp2$DNA_ID)], save.df$Date_R_CTD)
+
 ## 
+final.save.df <- save.df[,c("DNA_ID","Cruise","Station","Niskin","Cast_type",
+                            "Date_Carlson","Latitude_Cast_CTD",
+                            "Longitude_Cast_CTD","Pressure_Cast_CTD", 
+                            "Depth_Cast_CTD","Temperature_R_CTD","Salinity_R_CTD","Oxygen_R_CTD")]
+##
 output.destination <- c("/Users/yubinraut/Documents/Fuhrman_Lab/CBIOMES_Biogeography/I8S_I9N/Data/0.Raw_Data/CSV/")
 setwd(output.destination)
-write.csv(save.df, file = "1.20221221_I8S_I9N_Sample_Metadata.csv",row.names = F)
+write.csv(final.save.df, file = "1.20221221_I8S_I9N_Sample_Metadata.csv",row.names = F)
