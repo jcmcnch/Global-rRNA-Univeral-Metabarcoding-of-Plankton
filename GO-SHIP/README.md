@@ -4,7 +4,7 @@ The following links contain metadata associated with GRUMP metabarcoding data. F
 
 ## GO-SHIP P16N/S, 2005-2006
 
-- [Processed metadata file](https://github.com/jcmcnch/Global-rRNA-Univeral-Metabarcoding-of-Plankton/blob/f9a89cff7ed447552227c5ad03a00941b05cdf17/GO-SHIP/P16N-P16S/Associated_Measurements/0.P16NS_Raw_Data/CSV/2.20221118_P16NS_Sample_Metadata_Final.csv)
+- [Processed metadata file](GO-SHIP/P16N-P16S/Associated_Measurements/0.P16NS_Raw_Data/CSV/2.20221118_P16NS_Sample_Metadata_Final.csv)
 - [Water column characterization using physicochemical / molecular data plotted together](https://github.com/jcmcnch/P16N-SWaterColumnCharacterization)
 
 ### Recommended citations:
