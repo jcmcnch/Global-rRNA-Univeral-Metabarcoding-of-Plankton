@@ -12,6 +12,5 @@ These data will be available in 3 locations and formats:
 
 ### Associated measurements:
 
-Covariates measured alongside the metabarcoding samples will be available in this repository. Since each cruise section will have different data formats and covariates available, we will organize metadata into the subfolders of this repository. The repository contains a record of the intermediate processing steps needed to generate the metadata, as well as links to other relevant repositories.
-
-**The easiest way to access metadata is to follow the links provided in the README files in the subfolders.**
+- Covariates measured alongside the metabarcoding samples will be available in this repository. Since each cruise section will have different data formats and covariates available, we will organize metadata into the subfolders of this repository. The repository contains a record of the intermediate processing steps needed to generate the metadata, as well as links to other relevant repositories.
+- **The easiest way to access metadata is to follow the links provided in the README files in the subfolders.**
