@@ -1,13 +1,13 @@
-## 2022-11-04: G1 - Identify any potential mismatches with DNA ID 
+## 2023-05-29: G1 - Identify any potential mismatches with DNA ID 
 ## supplied by the Carlson Lab
 ## G2 - Resolve discrepancies identified 
 ## G3 - Create output file with confirmed DNA_IDs and Cast type 
 
 ## G1
 ## 1) Input files = .csv version of tabs "P16S_2005" and "P16N_2006"
-## from the "CLIVAR_DNALOG_CARLSON2019_with_DNA_ids" file from JM
+## from the "CLIVAR_DNALOG_CARLSON2019.xlsx" file from Carlson Lab
 ## P16S tab excludes Station 09
-input.file1 <- "/Users/yubinraut/Documents/Fuhrman_Lab/CBIOMES_Biogeography/Major_PFT_Manuscript/Data/0.P16NS_Raw_Data/CSV/20221104_P16S_Raw_DNA_ID.csv"
+input.file1 <- "/Users/yubinraut/Documents/Fuhrman_Lab/CBIOMES_Biogeography/P16NS/Source_Files/P16NS_Carlson_Lab/20221104_P16S_Raw_DNA_ID.csv"
 df.s <- read.csv(input.file1)
 ## Subset P16S with relevant overlapping columns 
 df.s <- df.s[,c("DNA_ID","CRUISE","STATION","NISKIN",
@@ -17,7 +17,7 @@ colnames(df.s) <- c("DNA_ID", "Cruise", "Station", "Niskin",
                     "Latitude_degrees_N","Longitude_degrees_E", 
                     "CTD_Pressue_dbar")
 ## P16N tab excludes Station 02
-input.file2 <- "/Users/yubinraut/Documents/Fuhrman_Lab/CBIOMES_Biogeography/Major_PFT_Manuscript/Data/0.P16NS_Raw_Data/CSV/20221104_P16N_Raw_DNA_ID.csv"
+input.file2 <- "/Users/yubinraut/Documents/Fuhrman_Lab/CBIOMES_Biogeography/P16NS/Source_Files/P16NS_Carlson_Lab/20221104_P16N_Raw_DNA_ID.csv"
 df.n <- read.csv(input.file2)
 ## Subset P16N with relevant overlapping columns 
 df.n <- df.n[,c("DNA_ID","CRUISE","STATION","NISKIN",
@@ -31,9 +31,10 @@ p16sn.raw <- rbind(df.s,df.n)
 ## 3) Per the notes on "SAMPLE SUMMARY" tab on the raw .xlsx file, all samples 
 ## were taken from Trace Metals Cast so add that as cast type column
 p16sn.raw$Cast_Type <- "Trace_Metal"
-## 4) Merged P16 S and N trace metal cast CTD data for which the source needs to 
-## be determined - check notes and document here ____________________ !!! ***
-input.file3 <- "/Users/yubinraut/Documents/Fuhrman_Lab/CBIOMES_Biogeography/Major_PFT_Manuscript/Data/0.P16NS_Raw_Data/CSV/P16_Tracemetal_Cast_Source_Temp.csv"
+
+## 4) Merged P16 S and N trace metal cast CTD data downloaded from BCO-DMO
+## http://data.bco-dmo.org/jg/info/BCO/CLIVAR_AEROSOL/P16_Trace_Metal_Profiles%7Bdir=data.bco-dmo.org/jg/dir/BCO/CLIVAR_AEROSOL/,data=data.bco-dmo.org:80/jg/serv/BCO/CLIVAR_AEROSOL/P16_trace_metal_profiles.html0%7D?
+input.file3 <- "/Users/yubinraut/Documents/Fuhrman_Lab/CBIOMES_Biogeography/P16NS/Source_Files/P16NS_CTD_Casts/P16NS_Tracemetal_Cast_BCO_DMO.csv"
 df.tm.raw <- read.csv(input.file3)
 ## 5) Concatenate Cruise, Station, and Niskin analogous columns to produce DNA_ID
 ## Cruise
@@ -80,9 +81,9 @@ range(p16sn.raw$Niskin[p16sn.raw$Difference > 10]) ## 8 - 36
 range(df.tm.raw$Niskin) ## N01 - N15
 ## Since the Niskin numbers range from 8 - 36, we can definitively conclude
 ## that they could not have all come trace metal casts, which range from 1 -15
-## 3) P16S regular casts CTD data for which the source needs to 
-## be determined - check notes and document here ____________________ !!! ***
-input.file4 <- c("/Users/yubinraut/Documents/Fuhrman_Lab/CBIOMES_Biogeography/Major_PFT_Manuscript/Data/0.P16NS_Raw_Data/CSV/P16S_Easier_to_navigate_YR_20211025_Source_Temp.csv")
+## 3) P16S regular casts CTD data: National Centers for Environmental Information - NOAA
+## https://www.ncei.noaa.gov/access/ocean-carbon-acidification-data-system/oceans/ndp_090/
+input.file4 <- c("/Users/yubinraut/Documents/Fuhrman_Lab/CBIOMES_Biogeography/P16NS/Source_Files/P16NS_CTD_Casts/P16S_Easier_to_navigate_YR_20211025_NCEI_NOAA.csv")
 p16s.reg.raw <- read.csv(input.file4)
 ## 4) Concatenate Cruise, Station, and Niskin analogous columns to produce DNA_ID
 ## Cruise - make sure to trim leading whitespace
@@ -131,38 +132,39 @@ p16s.47.raw$Manual_Record_Pressure <- p16s.47$CTD_Pressue_dbar[
 ## or the recorded pressures were correct.
 ## JM/YR - plot [DNA] to figure out that their recorded pressures are correct
 ## 9) Plot DNA depth profiles for P16S-S47
-input.file5 <- "/Users/yubinraut/Documents/Fuhrman_Lab/CBIOMES_Biogeography/Major_PFT_Manuscript/Data/0.P16NS_Raw_Data/TSV/20221026_P16NS_DNA_Conc_sample-metadata_JM.tsv"
-dna <- read.csv(input.file5, sep = "\t", header = T)
-dna$Sect_ID <- trimws(dna$Sect_ID, "l")
-dna.16s47 <- dna[dna$Sect_ID=="P16S"&dna$Station_number==47,]
-p3 <- ggplot(data = dna.16s47, aes(x = DNA_extract_conc_ng.µL, y = Pressure))+
-  geom_point()+
-  geom_line(orientation = "y")+
-  scale_y_reverse()+
-  theme_minimal()
-p3
+## 9) Plot DNA depth profiles for P16S-S47
+# input.file5 <- "/Users/yubinraut/Documents/Fuhrman_Lab/CBIOMES_Biogeography/Major_PFT_Manuscript/Data/0.P16NS_Raw_Data/TSV/20221026_P16NS_DNA_Conc_sample-metadata_JM.tsv"
+# dna <- read.csv(input.file5, sep = "\t", header = T)
+# dna$Sect_ID <- trimws(dna$Sect_ID, "l")
+# dna.16s47 <- dna[dna$Sect_ID=="P16S"&dna$Station_number==47,]
+# p3 <- ggplot(data = dna.16s47, aes(x = DNA_extract_conc_ng.µL, y = Pressure))+
+#   geom_point()+
+#   geom_line(orientation = "y")+
+#   scale_y_reverse()+
+#   theme_minimal()
+# p3
 ## The plot output doesn't follow a Martin curve distribution currently with
 ## mismatched DNA IDs.
 ## 10) Manually change the pressure to match the correct Niskin ID
-## N08
-dna.16s47$Pressure_Manual_Curate <- ifelse(dna.16s47$SampleID=="P16S-S47-N08", 
-    p16s.47.raw$CTDPRS[p16s.47.raw$DNA_ID=="P16S-S47-N14"],
-    dna.16s47$Pressure)
-## N14
-dna.16s47$Pressure_Manual_Curate <- ifelse(dna.16s47$SampleID=="P16S-S47-N14", 
-    p16s.47.raw$CTDPRS[p16s.47.raw$DNA_ID=="P16S-S47-N08"],
-    dna.16s47$Pressure_Manual_Curate)
-## N15
-dna.16s47$Pressure_Manual_Curate <- ifelse(dna.16s47$SampleID=="P16S-S47-N15", 
-    p16s.47.raw$CTDPRS[p16s.47.raw$DNA_ID=="P16S-S47-N05"],
-    dna.16s47$Pressure_Manual_Curate)
-## Re-plot
-p3.1 <- ggplot(data = dna.16s47, aes(x = DNA_extract_conc_ng.µL, y = Pressure_Manual_Curate))+
-  geom_point()+
-  geom_line(orientation = "y")+
-  scale_y_reverse()+
-  theme_minimal()
-p3.1
+# ## N08
+# dna.16s47$Pressure_Manual_Curate <- ifelse(dna.16s47$SampleID=="P16S-S47-N08", 
+#     p16s.47.raw$CTDPRS[p16s.47.raw$DNA_ID=="P16S-S47-N14"],
+#     dna.16s47$Pressure)
+# ## N14
+# dna.16s47$Pressure_Manual_Curate <- ifelse(dna.16s47$SampleID=="P16S-S47-N14", 
+#     p16s.47.raw$CTDPRS[p16s.47.raw$DNA_ID=="P16S-S47-N08"],
+#     dna.16s47$Pressure_Manual_Curate)
+# ## N15
+# dna.16s47$Pressure_Manual_Curate <- ifelse(dna.16s47$SampleID=="P16S-S47-N15", 
+#     p16s.47.raw$CTDPRS[p16s.47.raw$DNA_ID=="P16S-S47-N05"],
+#     dna.16s47$Pressure_Manual_Curate)
+# ## Re-plot
+# p3.1 <- ggplot(data = dna.16s47, aes(x = DNA_extract_conc_ng.µL, y = Pressure_Manual_Curate))+
+#   geom_point()+
+#   geom_line(orientation = "y")+
+#   scale_y_reverse()+
+#   theme_minimal()
+# p3.1
 ## If you put the CTD pressures for the correct DNA_ID
 ## the plot follows a Martin curve distribution.
 ## Conclusion for P16S-S47: the manual recorded target pressures are reliable
@@ -209,6 +211,6 @@ p16sn.raw$DNA_ID_Confirmed <- ifelse(p16sn.raw$DNA_ID=="P16S-S84-N20",
 p16ns.curate <- p16sn.raw[,c("DNA_ID","DNA_ID_Confirmed", "Cast_Type")]
 ## 2) Save output file
 colnames(p16ns.curate) <- c("Original_DNA_ID", "Corrected_DNA_ID", "Cast_Type")
-output.file <- c("/Users/yubinraut/Documents/Fuhrman_Lab/CBIOMES_Biogeography/Major_PFT_Manuscript/Data/0.P16NS_Raw_Data/CSV/")
+output.file <- c("/Users/yubinraut/Documents/Fuhrman_Lab/CBIOMES_Biogeography/P16NS/Data/0.P16NS_Raw_Data/")
 setwd(output.file)
-write.csv(p16ns.curate, file = "1.20221107_P16NS_Confirmed_DNA_ID_Cast_Type.csv", row.names = F)
+write.csv(p16ns.curate, file = "1.20230530_P16NS_Confirmed_DNA_ID_Cast_Type.csv", row.names = F)

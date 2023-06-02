@@ -1,4 +1,4 @@
-## 2022-11-18: G1 - Add columns of CTD data from tracemetal (TM) casts
+## 2023-05-30: G1 - Add columns of CTD data from tracemetal (TM) casts
 ## or regular (reg) casts for samples corresponding to the corrected DNA_ID
 ## G2 - Add [DNA] and photic zone designations to the P16 N/S sample metadata
 ## Note - *** We need to still verify units for all these measurements as 
@@ -6,16 +6,16 @@
 
 ## G1
 ## 1) Input files = corrected DNA ID and cast type file
-input.file1 <- "/Users/yubinraut/Documents/Fuhrman_Lab/CBIOMES_Biogeography/Major_PFT_Manuscript/Data/0.P16NS_Raw_Data/CSV/1.20221107_P16NS_Confirmed_DNA_ID_Cast_Type.csv"
+input.file1 <- "/Users/yubinraut/Documents/Fuhrman_Lab/CBIOMES_Biogeography/P16NS/Data/0.P16NS_Raw_Data/1.20230530_P16NS_Confirmed_DNA_ID_Cast_Type.csv"
 dna.id <- read.csv(input.file1)
 
 ## 2) Subset by TM and reg casts
 df.tm <- dna.id[dna.id$Cast_Type=="Trace_Metal",]
 df.reg <- dna.id[dna.id$Cast_Type=="Regular_Cast",]
 
-## 3) Merged P16 S and N trace metal cast CTD data for which the source needs to 
-## be determined - check notes and document here ____________________ !!! ***
-input.file2 <- "/Users/yubinraut/Documents/Fuhrman_Lab/CBIOMES_Biogeography/Major_PFT_Manuscript/Data/0.P16NS_Raw_Data/CSV/P16_Tracemetal_Cast_Source_Temp.csv"
+## 3) Merged P16 S and N trace metal cast CTD data downloaded from BCO-DMO
+## http://data.bco-dmo.org/jg/info/BCO/CLIVAR_AEROSOL/P16_Trace_Metal_Profiles%7Bdir=data.bco-dmo.org/jg/dir/BCO/CLIVAR_AEROSOL/,data=data.bco-dmo.org:80/jg/serv/BCO/CLIVAR_AEROSOL/P16_trace_metal_profiles.html0%7D?
+input.file2 <- "/Users/yubinraut/Documents/Fuhrman_Lab/CBIOMES_Biogeography/P16NS/Source_Files/P16NS_CTD_Casts/P16NS_Tracemetal_Cast_BCO_DMO.csv"
 df.tm.raw <- read.csv(input.file2)
 
 ## 4) Concatenate Cruise, Station, and Niskin analogous columns to produce DNA_ID
@@ -33,16 +33,15 @@ df.tm.raw$DNA_ID <- paste(df.tm.raw$Cruise, df.tm.raw$Station,
 ## 5) Subset TM CTD casts by corrected DNA_ID 
 ## list of columns to merge from CTD data
 tm.raw.cols <- c("DNA_ID","Cruise","Station","Niskin","latitude","longitude",
-                 "CTDPRS","TEMPERATURE","SALNTY","OXYGEN","PHSPHT",
+                 "DATE","CTDPRS","TEMPERATURE","SALNTY","OXYGEN","PHSPHT",
                  "SILCAT","NITRAT","NITRIT")
-df.tm.merged <- merge(x = df.tm[,c("Original_DNA_ID", "Cast_Type", 
-                                   "Corrected_DNA_ID")], 
+df.tm.merged <- merge(x = df.tm[,c("Original_DNA_ID","Corrected_DNA_ID","Cast_Type")], 
                       y = df.tm.raw[,tm.raw.cols], by.x = "Corrected_DNA_ID",
                       by.y = "DNA_ID")
 
-## 6) P16S regular casts CTD data for which the source needs to 
-## be determined - check notes and document here ____________________ !!! ***
-input.file3 <- c("/Users/yubinraut/Documents/Fuhrman_Lab/CBIOMES_Biogeography/Major_PFT_Manuscript/Data/0.P16NS_Raw_Data/CSV/P16S_Easier_to_navigate_YR_20211025_Source_Temp.csv")
+## 3) P16S regular casts CTD data: National Centers for Environmental Information - NOAA
+## https://www.ncei.noaa.gov/access/ocean-carbon-acidification-data-system/oceans/ndp_090/
+input.file3 <- c("/Users/yubinraut/Documents/Fuhrman_Lab/CBIOMES_Biogeography/P16NS/Source_Files/P16NS_CTD_Casts/P16S_Easier_to_navigate_YR_20211025_NCEI_NOAA.csv")
 p16s.reg.raw <- read.csv(input.file3)
 
 ## 7) Concatenate Cruise, Station, and Niskin analogous columns to produce DNA_ID
@@ -60,27 +59,26 @@ p16s.reg.raw$DNA_ID <- paste(p16s.reg.raw$Cruise, p16s.reg.raw$Station,
 ## 8) Subset reg CTD casts by corrected DNA_ID 
 ## list of columns to merge from CTD data
 reg.raw.cols <- c("DNA_ID","Cruise","Station","Niskin","LATITUDE","LONGITUDE",
-                 "CTDPRS","CTDTMP","SALNTY","OXYGEN","PHSPHT",
+                 "DATE","CTDPRS","CTDTMP","SALNTY","OXYGEN","PHSPHT",
                  "SILCAT","NITRAT","NITRIT")
-df.reg.merged <- merge(x = df.reg[,c("Original_DNA_ID", "Cast_Type", 
-                                   "Corrected_DNA_ID")], 
+df.reg.merged <- merge(x = df.reg[,c("Original_DNA_ID","Corrected_DNA_ID", "Cast_Type")], 
                       y = p16s.reg.raw[,reg.raw.cols], by.x = "Corrected_DNA_ID",
                       by.y = "DNA_ID")
 
 ## 9 Homogenize the colnames to merge into one df
 colnames(df.tm.merged) <- c("Corrected_DNA_ID","Original_DNA_ID","Cast_Type",
                             "Cruise","Station","Niskin","Latitude","Longitude",
-                            "Pressure","Temperature","Salinity","Oxygen",          
-                            "Phosphate","Silicate","Nitrate","Nitrite" )
+                            "Date","Pressure","Temperature","Salinity","Oxygen",          
+                            "Phosphate","Silicate","Nitrate","Nitrite")
 colnames(df.reg.merged) <- c("Corrected_DNA_ID","Original_DNA_ID","Cast_Type",
                             "Cruise","Station","Niskin","Latitude","Longitude",
-                            "Pressure","Temperature","Salinity","Oxygen",          
-                            "Phosphate","Silicate","Nitrate","Nitrite" )
+                            "Date","Pressure","Temperature","Salinity","Oxygen",          
+                            "Phosphate","Silicate","Nitrate","Nitrite")
 p16ns.metadata <- rbind(df.tm.merged, df.reg.merged)
 
 ##G2
 ## 1) input file = manual photic zone binning done by JM and YR
-input.file4 <- c("/Users/yubinraut/Documents/Fuhrman_Lab/CBIOMES_Biogeography/Major_PFT_Manuscript/Data/0.P16NS_Raw_Data/CSV/20221028_P16NS_Euphotic_Zone_Manual_Binning_Done_YR.csv")
+input.file4 <- c("/Users/yubinraut/Documents/Fuhrman_Lab/CBIOMES_Biogeography/P16NS/Source_Files/P16NS_Extra_Files/20221028_P16NS_Euphotic_Zone_Manual_Binning_Done_YR.csv")
 photic <- read.csv(input.file4)
 
 ## 2) Add photic zone by matching with original DNA_ID
@@ -111,7 +109,7 @@ p16ns.final <- p16ns.metadata[!p16ns.metadata$Original_DNA_ID
 sum(is.na(p16ns.final$Photic.Zone)) ## 0 samples left
 
 ## 7) input file = [DNA]
-input.file5 <- c("/Users/yubinraut/Documents/Fuhrman_Lab/CBIOMES_Biogeography/Major_PFT_Manuscript/Data/0.P16NS_Raw_Data/TSV/221116_P16N-S_DNA_concentrations_for_CMAP.tsv")
+input.file5 <- c("/Users/yubinraut/Documents/Fuhrman_Lab/CBIOMES_Biogeography/P16NS/Source_Files/P16NS_Extra_Files/221116_P16N-S_DNA_concentrations_for_CMAP.tsv")
 dna.con <- read.csv(input.file5, sep = "\t", header = T)
 
 ## 8) Add [DNA] column matching to original DNA_ID
@@ -124,7 +122,31 @@ library(oce)
 p16ns.final$Depth <- swDepth(pressure = p16ns.final$Pressure, 
                              latitude = p16ns.final$Latitude)
 
-## 10) Save output file
-output.file <- c("/Users/yubinraut/Documents/Fuhrman_Lab/CBIOMES_Biogeography/Major_PFT_Manuscript/Data/0.P16NS_Raw_Data/CSV/")
+## 10) Only include the corrected DNA IDs and moving forward, this is all that will be used
+p16ns.final2 <- p16ns.final[,c(1,3:20)]
+
+## 11) Change colnames to include units
+colnames(p16ns.final2) <- c("DNA_ID","Cast_Type","Cruise","Station","Niskin",
+                            "Latitude.degrees.North", "Longitude.degrees.East",
+                            "Date.yyyy.mm.dd", "Pressure.decibars", 
+                            "Temperature.degrees.Celsius", "Salinity.psu",
+                            "Oxygen.umol.kg", "Phosphate.umol.kg", "Silicate.umol.kg",
+                            "Nitrate.umol.kg", "Nitrite.umol.kg", "Photic.Zone",
+                            "DNA.concentration.ng.uL","Depth.meters")
+
+## 12) Plot the DNA concentrations for each unique station to see if it follows 
+## Martic curve distribution
+dna.plot <- p16ns.final2
+dna.plot$Facet <- paste(dna.plot$Cruise, dna.plot$Station, sep = "_")
+dna.plot <- dna.plot[order(-dna.plot$Pressure.decibars),]
+ggplot(dna.plot, aes(x = DNA.concentration.ng.uL, y = Pressure.decibars))+
+  geom_point()+
+  geom_path()+
+  scale_y_reverse()+
+  facet_wrap(~Facet)
+# dna.plot[dna.plot$Facet=="P16S_S84", c("DNA_ID", "Pressure.decibars", "DNA.concentration.ng.uL")]
+
+## 13) Save output file
+output.file <- c("/Users/yubinraut/Documents/Fuhrman_Lab/CBIOMES_Biogeography/P16NS/Data/0.P16NS_Raw_Data/")
 setwd(output.file)
-write.csv(p16ns.final, file = "2.20221118_P16NS_Sample_Metadata_Final.csv", row.names = F)
+write.csv(p16ns.final2, file = "2.20230530_P16NS_Sample_Metadata_Final.csv", row.names = F)
