@@ -15,7 +15,7 @@ The following links contain metadata associated with GRUMP metabarcoding data. F
 ## GA03 (Atlantic Longitudinal Section) 
 
 - [Processed metadata file]()
-- [Water column characterization using physicochemical / molecular data plotted together]()
+- [Water column characterization using physicochemical / molecular data plotted together](https://github.com/jcmcnch/GA03WaterColumnCharacterization)
 
 ### Recommended citations:
 
