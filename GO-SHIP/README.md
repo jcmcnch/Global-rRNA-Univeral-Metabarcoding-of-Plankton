@@ -7,7 +7,7 @@ The following links contain metadata associated with GRUMP metabarcoding data. F
 - [Processed metadata file](P16N-P16S/Associated_Measurements/Metadata_processing/Data/0.P16NS_Raw_Data/2.20230622_P16NS_Sample_Metadata_Final.csv)
 ```
 #To download using wget:
-wget https://raw.githubusercontent.com/jcmcnch/Global-rRNA-Univeral-Metabarcoding-of-Plankton/main/GO-SHIP/P16N-P16S/Associated_Measurements/Metadata_processing/Data/0.P16NS_Raw_Data/2.20230603_P16NS_Sample_Metadata_Final.csv
+wget https://raw.githubusercontent.com/jcmcnch/Global-rRNA-Univeral-Metabarcoding-of-Plankton/main/GO-SHIP/P16N-P16S/Associated_Measurements/Metadata_processing/Data/0.P16NS_Raw_Data/2.20230622_P16NS_Sample_Metadata_Final.csv
 ```
 
 - [Water column characterization using physicochemical / molecular data plotted together](https://github.com/jcmcnch/P16N-SWaterColumnCharacterization)
