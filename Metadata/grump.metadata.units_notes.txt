@@ -1,0 +1,25 @@
+Metadata Variable	Description 	I8S-I9N	P15S	P16N-P16S	AMT19-AMT20	GA02	GA03	GA10	GP13	MOSAiC Drift	Gradients_2	Gradients_3	Gradients_4	K-Axis	IND_2017	POTATOE	HEOBI	FRAM_Strait	North_Antarctic_Penisula_TS
+SampleID	"Unique SampleID for each sample. This will be used to join the metadata to the sequencing data, and therefore, the two must be the same."																		
+Cruise	Descibes which cruise this data was taken on.																		
+Station	A number or code signifying which sampling station this sample was taken from. 																		
+Cast	The cast identification for which this sample was taken.																		
+Date	The date that this sample was taken on.	dd/mm/year	dd/mm/year	dd/mm/year	dd/mm/year	dd/mm/year	dd/mm/year	dd/mm/year	dd/mm/year	dd/mm/year	dd/mm/year	dd/mm/year		dd/mm/year	dd/mm/year	dd/mm/year	dd/mm/year		
+Time	Time this sample was taken.	24hr	24hr	24hr	24hr	24hr	24hr	24hr	24hr	24hr	24hr	24hr		24hr	24hr	24hr	24hr		
+Latitude	Latitude at which this sample was taken.	Decimal Degrees	Decimal Degrees	Decimal Degrees	Decimal Degrees	Decimal Degrees	Decimal Degrees	Decimal Degrees	Decimal Degrees	Decimal Degrees	Decimal Degrees	Decimal Degrees		Decimal Degrees	Decimal Degrees	Decimal Degrees	Decimal Degrees		
+Longitude	Longitude at which this sample was taken.	Decimal Degrees	Decimal Degrees	Decimal Degrees	Decimal Degrees	Decimal Degrees	Decimal Degrees	Decimal Degrees	Decimal Degrees	Decimal Degrees	Decimal Degrees	Decimal Degrees		Decimal Degrees	Decimal Degrees	Decimal Degrees	Decimal Degrees		
+Depth	The depth at which each sample was taken.	metres	metres	metres	metres	metres	metres	metres	metres	metres	metres	metres		metres	metres	metres	metres		
+Bottom_Depth	The bottom depth of the ocean where the sample was taken.	metres	metres	metres	metres	metres	metres	metres	metres		metres	metres		metres	metres	metres	metres		
+Temperature	Temperature of the water where the sample was taken.	。	。	。	。	。	。	。	。		。	。		。	。	。	。		
+Salinity	The salinity of the water where the sample was taken.	PSU	PSU	PSU	PSU	PSU	PSU	PSU	PSU		PSU	PSU		PSU	PSU	PSU	PSU		
+Oxygen	The oxygen level of the water where the sample was taken.	痠ol/Kg	痠ol/Kg	痠ol/Kg	痠ol/L	痠ol/Kg	痠ol/Kg	痠ol/Kg	痠ol/Kg		痠ol/Kg	痠ol/Kg		痠ol/L	痠ol/L	N/A	痠ol/L		
+Silicate	The concentration of silicate in the water where the sample was taken.	痠ol/Kg	痠ol/Kg	痠ol/Kg	痠ol/L	痠ol/Kg	痠ol/Kg	痠ol/Kg	痠ol/Kg		痠ol/Kg	痠ol/Kg		痠ol/L	痠ol/L	痠ol/L	痠ol/L		
+NO2	The concentration of Nitrite in the water where the sample was taken.	痠ol/Kg	痠ol/Kg	痠ol/Kg	痠ol/L	痠ol/Kg	痠ol/Kg	痠ol/Kg	痠ol/Kg		N/A	痠ol/Kg		N/A	痠ol/L	痠ol/L	痠ol/L		
+NO3	The concentration of Nitrate in the water where the sample was taken.	痠ol/Kg	痠ol/Kg	痠ol/Kg	痠ol/L	痠ol/Kg	痠ol/Kg	痠ol/Kg	痠ol/Kg		N/A	痠ol/Kg		N/A	痠ol/L	痠ol/L	痠ol/L		
+NOx	The concentration of Nitrogen oxides in the water where the sample was taken.	痠ol/Kg	痠ol/Kg	痠ol/Kg	痠ol/L	痠ol/Kg	痠ol/Kg	痠ol/Kg	痠ol/Kg		痠ol/Kg	痠ol/Kg		N/A	痠ol/L	痠ol/L	痠ol/L		
+NH3	The concentration of Ammonia in the water where the sample was taken.	N/A	痠ol/Kg	N/A	N/A	N/A	N/A	N/A	N/A		N/A	痠ol/Kg		N/A	痠ol/L	N/A	N/A		
+PO4	The concentration of Phosphate in the water where the sample was taken.	痠ol/Kg	痠ol/Kg	痠ol/Kg	痠ol/L	痠ol/Kg	痠ol/Kg	痠ol/Kg	痠ol/Kg		痠ol/Kg	痠ol/Kg		N/A	痠ol/L	痠ol/L	痠ol/L		
+TOC	The concentration of Total Organic Carbon in the water where the sample was taken.	N/A	N/A	N/A	N/A	N/A	N/A	N/A	N/A		痠ol/Kg	痠ol/Kg		N/A	N/A	N/A	N/A		
+DOC	The concentration of Dissolved Organic Carbon in the water where the sample was taken.	痠ol/Kg	N/A	N/A	N/A	N/A	N/A	N/A	N/A		N/A	N/A		N/A	N/A	N/A	N/A		
+PAR	The photosynthetically active radiation in the water where the sample was taken.	N/A	N/A	N/A	W/m^2	N/A	N/A	N/A	N/A		W/m^2	N/A		N/A	N/A	W/m^2	N/A		
+Chlorophyll	The concentration of chlorophyll in the water where sample was taken.	N/A	痢/L	N/A	痢/L	N/A	N/A	痢/L	N/A		痢/L	痢/L		痢/L	N/A	痢/L	N/A		
+"NOTE: For AMT19 and 20, as well as Gradients, the metadata comes from Niskins which were deployed separate from the Niskin which the DNA has been extracted. This means that the time is differences range from 30min - 2hrs, and the lat long is slightly different."																			
